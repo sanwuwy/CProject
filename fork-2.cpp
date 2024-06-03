@@ -3,6 +3,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
+#include "spdlog/spdlog.h"
 
 #define XCC_UTIL_TEMP_FAILURE_RETRY(exp) ({         \
             __typeof__(exp) _rc;                    \
@@ -14,45 +15,50 @@
 
 
 int my_fork() {
+
     pid_t pid = fork();
-    printf("main 2, mypid = %d, pid = %d\n", getpid(), pid);
+    spdlog::info("main 2, mypid = {}, pid = {}", getpid(), pid);
 
     if (pid == -1) {
-        perror("fork error");
+        spdlog::error("fork error");
         exit(1);
     } else if (pid == 0) {  //son
-        printf("I'm process child, pid = %d\n", getpid());
+        spdlog::error("I'm process child, pid = {}", getpid());
         sleep(3);
         exit(4);
     } else {  //parent
-        printf("I'm process parent, pid = %d\n", getpid());
+        spdlog::info("I'm process parent, pid = {}", getpid());
         return pid;
     }
 }
 
 int main(void) {
+    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+    // change log pattern
+    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%L%$] [thread %t] %v");
+
     pid_t cpid, wpid;
     int flg = 0;
 
-    printf("main 1, mypid = %d\n", getpid());
+    spdlog::info("main 1, mypid = {}", getpid());
 
     cpid = my_fork();
 
-    printf("main, cpid = %d\n", cpid);
+    spdlog::info("main 2, cpid = {}", cpid);
 
 
     if (cpid == -1) {
-        printf("fork fail");
+        spdlog::error("fork fail");
     }
 
     int status = 0;
-    wpid = XCC_UTIL_TEMP_FAILURE_RETRY(waitpid(cpid, NULL, 0x40000000));
+    wpid = XCC_UTIL_TEMP_FAILURE_RETRY(waitpid(cpid, NULL, 0));
 
     if (wpid == -1) {
-        printf("wait fail");
+        spdlog::error("wait fail");
     }
 
-    printf("main end...\n");
+    spdlog::info("main end...\n");
 
     return 0;
 }

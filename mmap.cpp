@@ -15,13 +15,15 @@ int main(int argc, char* argv[]) {
     char* mapped;
 
     //打开文件
-    if ((fd = open("test.txt", O_RDWR)) < 0) {
+    if ((fd = open("../test.txt", O_RDWR)) < 0) {
         perror("open");
     }
 
     //获取文件的属性
     if ((fstat(fd, &sb)) == -1) {
         perror("fstat");
+    } else {
+        printf("sb.st_size = %lld\n", sb.st_size);
     }
 
     //将文件映射至进程的地址空间

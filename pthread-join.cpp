@@ -2,14 +2,14 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "limlog/Log.h"
+#include "spdlog/spdlog.h"
 
 void *thread_function(void *arg)
 {
     int i;
     for (i = 0; i < 8; i++)
     {
-        LOG_INFO << "Thread working: " << __FUNCTION__ << i;
+        spdlog::info("Thread working: {0} {1}", __FUNCTION__, i);
         sleep(1);
     }
     return NULL;
@@ -17,20 +17,22 @@ void *thread_function(void *arg)
 
 int main(void)
 {
-    setLogLevel(limlog::LogLevel::DEBUG);
+    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+    // change log pattern
+    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%L%$] [thread %t] %v");
 
     pthread_t mythread;
 
     if (pthread_create(&mythread, NULL, thread_function, NULL))
     {
-        LOG_INFO << "error creating thread.";
+        spdlog::info("error creating thread.");
         abort();
     }
     if (pthread_join(mythread, NULL)) // 使主线程等待子线程执行完再继续执行
     {
-        LOG_INFO << "error join thread.";
+        spdlog::info("error join thread.");
         abort();
     }
-    LOG_INFO << "Thread done!" << __FUNCTION__;
+    spdlog::info("Thread done! {}", __FUNCTION__);
     exit(0);
 }

@@ -18,7 +18,7 @@ int main()
         wait(NULL); // 等待子进程发送一个 SIGCHLD 信号
         ptrace(PTRACE_GETREGS, child, NULL, &regs); // 获取子进程的各个寄存器的值
         printf("Register: rdi[%ld], rsi[%ld], rdx[%ld], rax[%ld], orig_rax[%ld]\n",
-                regs.rdi, regs.rsi, regs.rdx,regs.rax, regs.orig_rax); // 打印寄存器的值
+                regs.rdi, regs.rsi, regs.rdx, regs.rax, regs.orig_rax); // 打印寄存器的值
         ptrace(PTRACE_CONT, child, NULL, NULL); // 继续运行子进程
         sleep(1);
     }

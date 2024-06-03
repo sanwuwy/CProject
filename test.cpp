@@ -1,5 +1,5 @@
 #include <iostream>
-#include "limlog/Log.h"
+#include <spdlog/spdlog.h>
 
 using namespace std;
 
@@ -8,7 +8,9 @@ struct _jmethodID;
 typedef struct _jmethodID* jmethodID;
 
 int main() {
-    setLogLevel(limlog::LogLevel::DEBUG);
+    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+    // change log pattern
+    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%L%$] [thread %t] %v");
 
     // int flags = 193;
 
@@ -22,9 +24,9 @@ int main() {
     jmethodID open = reinterpret_cast<jmethodID>(i);
 
     if (open == nullptr) {
-        LOG_DEBUG << "Yes";
+        spdlog::info("Yes");
     } else {
-        LOG_DEBUG << "No";
+        spdlog::info("No");
     }
 
 
