@@ -1,0 +1,62 @@
+# 编译生成的文件
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.out
+
+# 编译器生成的文件
+*.d
+*.dSYM/
+*.pdb
+*.ilk
+*.idb
+
+# 临时文件
+*.tmp
+*.log
+*.swp
+*.swo
+*.bak
+*.old
+
+# 编辑器和IDE生成的文件
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj*
+*.vcproj*
+*.sln
+
+# CMake生成的文件
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# 自动生成的文档
+docs/
+doxygen/
+
+# 构建目录
+build/
+bin/
+obj/
+Debug/
+Release/
+
+# 包管理工具生成的文件
+.vcpkg/
+conanbuildinfo.txt
+conanbuildinfo.cmake
+conaninfo.txt
+conan.lock
